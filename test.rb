@@ -1,1 +1,1 @@
-require './tests/app_test'
+require './tests/unit/task_test'
