@@ -4,5 +4,5 @@ class Task < Ohm::Model
   attribute :created_at
   attribute :state
 
-  index :name
+  index :created_at
 end
