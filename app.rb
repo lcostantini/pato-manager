@@ -19,7 +19,7 @@ command :new do |c|
     http = Net::HTTP.new(uri.host, uri.port)
     request = Net::HTTP::Post.new("/tasks")
     request.add_field('Content-Type', 'application/json')
-    request.body = {"task" => {"name" => "web post task", "description" => ""}}.to_json
+    request.body = {"task" => {"name" => "#{name}", "description" => "#{description}"}}.to_json
     response = http.request(request)
     say "# OK" if response.code == "201"
   end
