@@ -11,10 +11,10 @@ program :description, 'A console application to keep tracking of your todo lists
 command :new do |c|
   c.syntax = 'new [options]'
   c.description = 'Create a new task'
-  c.option '--description STRING', String, 'Adds a description for a task'
+  c.option '--d STRING', String, 'Adds a description for a task'
   c.action do |args, options|
     name = args.join(' ') || ask("Name: ")
-    description = options.description
+    description = options.d
     uri = URI.parse('http://localhost:9393')
     http = Net::HTTP.new(uri.host, uri.port)
     request = Net::HTTP::Post.new("/tasks")
@@ -34,3 +34,14 @@ command :all do |c|
     say "#{ res }"
   end
 end
+
+command :todo do |c|
+  c.syntax = '[options]'
+  c.description = 'List all the todo tasks'
+  c.action do |options|
+    res = Net::HTTP.get(URI('http://localhost:9393/tasks'))
+    say "#{ res }"
+  end
+end
+
+default_command :todo
