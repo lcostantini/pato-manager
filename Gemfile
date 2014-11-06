@@ -11,5 +11,5 @@ end
 
 group :test do
   gem 'cutest'
-  gem 'fakeredis', '~> 0.3.0'
+  gem 'dotenv-rails'
 end
