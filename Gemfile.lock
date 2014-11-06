@@ -10,8 +10,13 @@ GEM
       dotenv (= 1.0.2)
     highline (1.6.21)
     hiredis (0.5.2)
+    httparty (0.13.1)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
+    json (1.8.1)
     method_source (0.8.2)
     msgpack (0.5.9)
+    multi_xml (0.5.5)
     nido (0.0.1)
     ohm (2.0.1)
       msgpack
@@ -32,5 +37,6 @@ DEPENDENCIES
   commander
   cutest
   dotenv-rails
+  httparty
   ohm (~> 2.0.1)
   pry
