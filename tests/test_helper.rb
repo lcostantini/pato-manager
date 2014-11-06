@@ -1,8 +1,7 @@
 ENV['RACK_ENV'] = 'test'
+ENV['REDISTOGO_URL'] = "redis://localhost:6379/2"
 
 require './config/application'
-
-Ohm.redis = Redic.new("redis://localhost:6379/2")
 
 prepare do
   Ohm.flush
