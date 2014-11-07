@@ -7,6 +7,7 @@ gem 'ohm', '~> 2.0.1'
 gem 'httparty'
 
 group :development, :test do
+  gem 'terminal-table'
   gem 'pry'
 end
 

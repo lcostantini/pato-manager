@@ -29,6 +29,7 @@ GEM
     redic (1.1.1)
       hiredis
     slop (3.6.0)
+    terminal-table (1.4.5)
 
 PLATFORMS
   ruby
@@ -40,3 +41,4 @@ DEPENDENCIES
   httparty
   ohm (~> 2.0.1)
   pry
+  terminal-table
