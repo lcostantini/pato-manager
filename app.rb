@@ -1,8 +1,5 @@
 #!/usr/bin/env ruby
 require './config/application'
-require 'commander/import'
-require 'httparty'
-require 'json'
 
 program :name, 'Todos'
 program :version, '0.0.1'
@@ -15,7 +12,11 @@ command :todo do |c|
   c.description = 'List all the todo tasks'
   c.action do
     response = HTTParty.get "#{ ENV['LOCALHOST_URL'] }"
-    say "#{ response }"
+    header = ['Name', 'Description', 'Date', 'State']
+    rows = response.map do |r|
+      ["#{ r["name"] }", "#{ r["description"] }", "#{ r["created_at"] }", "#{ r["state"] }"]
+    end
+    puts Terminal::Table.new rows: rows, headings: header
   end
 end
 
