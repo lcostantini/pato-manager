@@ -1,6 +1,5 @@
 class ResponseDecorator
-
-  def header_task(header)
+  def header_task header
     if header.nil?
       ['Name', 'Description', 'Date', 'State']
     else
@@ -8,7 +7,7 @@ class ResponseDecorator
     end
   end
 
-  def decorate_table(response, header = nil)
+  def decorate_table response, header = nil
     Terminal::Table.new rows: response_row(response), headings: header_task(header)
   end
 
@@ -17,5 +16,4 @@ class ResponseDecorator
       ["#{ r["name"] }", "#{ r["description"] }", "#{ r["created_at"] }", "#{ r["state"] }"]
     end
   end
-
 end
