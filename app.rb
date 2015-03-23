@@ -12,7 +12,7 @@ command :todo do |c|
   c.description = 'List all the todo tasks'
   c.action do
     response = HTTParty.get "#{ ENV['URL'] }/tasks"
-    puts ResponseDecorator.new.decorate_table(response, {header: ['Name', 'Description', 'Date', 'State']})
+    puts ResponseDecorator.new.decorate_table response, { header: ['Name', 'Description', 'Date', 'State'] }
   end
 end
 
@@ -21,9 +21,9 @@ command :new do |c|
   c.description = 'Create a new task'
   c.option '--d STRING', String, 'Adds a description for a task'
   c.action do |args, options|
-    name = args.join(' ') || ask("Name: ")
+    name = args.join('') || ask("Name: ")
     params = { task: { name: name, description: options.d } }
-    response = HTTParty.post "#{ ENV['URL'] }/tasks", headers: {'Content-Type' => 'application/json'}, body: params.to_json
+    response = HTTParty.post "#{ ENV['URL'] }/tasks", headers: { 'Content-Type' => 'application/json' }, body: params.to_json
     say "# OK" if response.code == 201
   end
 end
@@ -33,7 +33,7 @@ command :all do |c|
   c.description = 'List all the tasks'
   c.action do
     response = HTTParty.get "#{ ENV['URL'] }/tasks/all"
-    puts ResponseDecorator.new.decorate_table(response)
+    puts ResponseDecorator.new.decorate_table response
   end
 end
 
@@ -44,7 +44,7 @@ command :update do |c|
   c.action do |args, options|
     id = args.join('')
     params = { task: { name: options.n, description: options.d } }
-    response = HTTParty.put "#{ ENV['URL'] }/tasks/#{ id }", headers: {'Content-Type' => 'application/json'}, body: params.to_json
+    response = HTTParty.put "#{ ENV['URL'] }/tasks/#{ id }", headers: { 'Content-Type' => 'application/json' }, body: params.to_json
     say "# OK" if response.code == 200
   end
 end
