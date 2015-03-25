@@ -1,2 +1,0 @@
-require 'cutest'
-require 'pry'
