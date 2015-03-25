@@ -26,7 +26,6 @@ command :new do |c|
     category = options.c || ask("Category: ")
     params = { task: { name: name, description: options.d, category: category } }
     response = HTTParty.post "#{ ENV['URL'] }/tasks", headers: { 'Content-Type' => 'application/json' }, body: params.to_json
-    binding.pry
     say "# OK" if response.code == 201
   end
 end
@@ -77,5 +76,14 @@ command :delete do |c|
     id = args.join(' ')
     response = HTTParty.delete "#{ ENV['URL'] }/tasks/#{ id }"
     say "# OK" if response.code == 200
+  end
+end
+
+command :category do |c|
+  c.description = 'Find all tasks for a specific category.'
+  c.action do |args|
+    category = args.join(' ') || ask("Category: ")
+    response = HTTParty.get "#{ ENV['URL'] }/tasks/category?topic=#{ category }"
+    puts ResponseDecorator.new.decorate_table response
   end
 end
