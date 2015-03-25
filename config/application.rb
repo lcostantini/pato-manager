@@ -1,7 +1,10 @@
-require "./config/#{ ENV['RACK_ENV'] || 'development' }"
+require 'dotenv'
+Dotenv.load
 
-require 'ohm'
-Ohm.redis = Redic.new(ENV['REDISTOGO_URL'])
+require 'commander/import'
+require 'httparty'
+require 'json'
+require 'terminal-table'
+require 'pry'
 
-require './models/task'
 require './models/response_decorator'
