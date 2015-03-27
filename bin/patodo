@@ -31,7 +31,7 @@ command :new do |c|
 end
 
 command :all do |c|
-  c.description = 'List all the todo tasks.'
+  c.description = 'List all the tasks.'
   c.action do
     response = HTTParty.get "#{ ENV['URL'] }/tasks/all"
     puts ResponseDecorator.new.decorate_table response
@@ -40,7 +40,7 @@ end
 
 command :update do |c|
   c.syntax = 'update [options]'
-  c.description = 'Update a todo task.'
+  c.description = 'Update a task.'
   c.option '--n STRING', String, 'Adds a new name for a task'
   c.option '--d STRING', String, 'Adds a new description for a task'
   c.option '--c STRING', String, 'Add a category for a todo task.'
@@ -62,7 +62,7 @@ command :done do |c|
 end
 
 command :undone do |c|
-  c.description = 'Mark a todo task as undone.'
+  c.description = 'Mark a task as undone.'
   c.action do |args|
     id = args.join(' ')
     response = HTTParty.put "#{ ENV['URL'] }/tasks/#{ id }/undone"
@@ -71,7 +71,7 @@ command :undone do |c|
 end
 
 command :delete do |c|
-  c.description = 'Delete a todo task.'
+  c.description = 'Delete a task.'
   c.action do |args|
     id = args.join(' ')
     response = HTTParty.delete "#{ ENV['URL'] }/tasks/#{ id }"
