@@ -24,7 +24,8 @@ then run **bin/patodo**.
 
 ## Commands
 
-All the commands support the option -h to see the help.
+All the commands support the option -h to see the help and description
+for each.
 
 1. new
 2. todo (is the default command)
@@ -32,6 +33,7 @@ All the commands support the option -h to see the help.
 4. update
 5. done
 6. undone
+7. category
 
 
 ## Example
