@@ -12,15 +12,21 @@ When you're working in a terminal and want to save a task, you only need to run
 the appropriate command and the task is saved. You can also check if you have
 unfinished tasks.
 
+## Install
+
+```
+git clone git@github.com:lcostantini/pato-manager.git
+cd pato-manager
+bundle
+```
+
 ## Usage
 
-For run the application first you need to export the environment variable.
+For run the application you need to run.
 
 ```
-export URL=https://pato-manager.herokuapp.com/
+bin/patodo
 ```
-
-then run **bin/patodo**.
 
 ## Commands
 
@@ -35,13 +41,12 @@ for each.
 6. undone
 7. category
 
-
 ## Example
 
 Create a new task.
 
 ```
-bin/patodo new Example task --c example
+bin/patodo new 'Write Readme' task --c 'example'
 ```
 
 this return **OK** if the task was correctly created.
@@ -58,13 +63,8 @@ returns a table with all pending tasks.
 |:------------:|:-----------:|:----------:|:-----:|:--------:|
 | Example task |             | 2015-03-24 | todo  | example  |
 
-## Install
-
-```
-git clone git@github.com:lcostantini/pato-manager.git
-cd pato-manager
-bundle
-```
+If you try to create a new task without name and category Pato Manager
+asking for one.
 
 ## Contributing
 
