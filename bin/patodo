@@ -11,10 +11,15 @@ def current_token
   @token ||= open(File.expand_path("~/.pato-manager/.pato_manager")).read.chomp
 end
 
+def json_response response
+  JSON.parse response
+end
+
 raise 'Error: Can\'t read the token.' unless current_token
 
 class Patodo
   include HTTParty
+  base_uri "#{ ENV['URL'] }"
   headers 'Content-Type' => 'application/json'
   headers 'User-Token' => current_token
 end
@@ -27,14 +32,17 @@ default_command :todo
 
 command :todo do |c|
   c.description = 'List all the todo tasks.'
-  c.action do
-    response = Patodo.get "#{ ENV['URL'] }/tasks"
-    puts ResponseDecorator.new.decorate_table response
+  c.option '--d', 'Show description column in table.'
+  c.option '--da', 'Show date column in table.'
+  c.action do |_, options|
+    show = { description: options.d, date: options.da }.reject { |_, v| v.nil? }
+    response = Patodo.get "/tasks"
+    puts ResponseDecorator.new.decorate_table json_response(response), show
   end
 end
 
 command :new do |c|
-  c.syntax = 'new [options]'
+  c.syntax = 'new options \'string\''
   c.description = 'Create a new todo task.'
   c.option '--d STRING', String, 'Adds a description for a todo task.'
   c.option '--c STRING', String, 'Add a category for a todo task.'
@@ -42,7 +50,8 @@ command :new do |c|
     name = args.join(' ') || ask("Name: ")
     category = options.c || ask("Category: ")
     params = { task: { name: name, description: options.d, category: category } }
-    response = Patodo.post "#{ ENV['URL'] }/tasks", body: params.to_json
+    response = Patodo.post "/tasks", body: params.to_json
+    binding.pry
     say "# OK" if response.code == 201
   end
 end
@@ -50,13 +59,13 @@ end
 command :all do |c|
   c.description = 'List all the tasks.'
   c.action do
-    response = Patodo.get "#{ ENV['URL'] }/tasks/all"
-    puts ResponseDecorator.new.decorate_table response
+    response = Patodo.get "/tasks/all"
+    puts ResponseDecorator.new.decorate_table json_response(response)
   end
 end
 
 command :update do |c|
-  c.syntax = 'update [options]'
+  c.syntax = 'update id options \'string\''
   c.description = 'Update a task.'
   c.option '--n STRING', String, 'Adds a new name for a task'
   c.option '--d STRING', String, 'Adds a new description for a task'
@@ -64,44 +73,48 @@ command :update do |c|
   c.action do |args, options|
     id = args.join(' ')
     params = { task: { name: options.n, description: options.d, category: options.c } }
-    response = Patodo.put "#{ ENV['URL'] }/tasks/#{ id }", body: params.to_json
+    response = Patodo.put "/tasks/#{ id }", body: params.to_json
     say "# OK" if response.code == 200
   end
 end
 
 command :done do |c|
+  c.syntax = 'done id'
   c.description = 'Mark a todo task as done.'
   c.action do |args|
     id = args.join(' ')
-    response = Patodo.put "#{ ENV['URL'] }/tasks/#{ id }/done"
+    response = Patodo.put "/tasks/#{ id }/done"
     say "# OK" if response.code == 200
   end
 end
 
 command :undone do |c|
+  c.syntax = 'undone id'
   c.description = 'Mark a task as undone.'
   c.action do |args|
     id = args.join(' ')
-    response = Patodo.put "#{ ENV['URL'] }/tasks/#{ id }/undone"
+    response = Patodo.put "/tasks/#{ id }/undone"
     say "# OK" if response.code == 200
   end
 end
 
 command :delete do |c|
+  c.syntax = 'delete id'
   c.description = 'Delete a task.'
   c.action do |args|
     id = args.join(' ')
-    response = Patodo.delete "#{ ENV['URL'] }/tasks/#{ id }"
+    response = Patodo.delete "/tasks/#{ id }"
     say "# OK" if response.code == 200
   end
 end
 
 command :category do |c|
   # TODO: filtrar tambien por done (--d) y undone (--t).
+  c.syntax = 'category \'string\''
   c.description = 'Find all tasks for a specific category.'
   c.action do |args|
     category = args.join(' ') || ask("Category: ")
-    response = Patodo.get "#{ ENV['URL'] }/tasks/category?topic=#{ category }"
-    puts ResponseDecorator.new.decorate_table response
+    response = Patodo.get "/tasks/category?topic=#{ category }"
+    puts ResponseDecorator.new.decorate_table json_response(response)
   end
 end
