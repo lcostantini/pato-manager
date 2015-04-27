@@ -12,7 +12,7 @@ def current_token
 end
 
 def json_response response
-  JSON.parse response
+  JSON.parse response, symbolize_names: true
 end
 
 raise 'Error: Can\'t read the token.' unless current_token

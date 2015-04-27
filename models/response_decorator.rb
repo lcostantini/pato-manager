@@ -3,21 +3,21 @@ class ResponseDecorator
     @response = response
     @options = options
     return '# The list is empty' if response.empty?
-    Terminal::Table.new headings: get_head, rows: get_rows
+    Terminal::Table.new headings: get_header, rows: get_rows
   end
 
   private
 
   def default_rows
     @response.map do |r|
-      ["#{ r['id'] }",
-       "#{ r['name'] }",
-       "#{ r['state'] }",
-       "#{ r['category'] }"]
+      ["#{ r[:id] }",
+       "#{ r[:name] }",
+       "#{ icon_state(r[:state]) }",
+       "#{ r[:category] }"]
     end
   end
 
-  def get_head
+  def get_header
     head = ['Id', 'Name', 'State', 'Category']
     head << 'Date' if @options[:date]
     head << 'Description' if @options[:description]
@@ -32,13 +32,18 @@ class ResponseDecorator
   end
 
   def options_rows
-    date = option_response 'created_at' if @options[:date]
-    description = option_response 'description' if @options[:description]
+    date = option_response :created_at if @options[:date]
+    description = option_response :description if @options[:description]
     return ([date] + [description]).compact.first if @options.count == 1
     [date, description].transpose
   end
 
   def option_response option
     @response.map { |r| "#{ r[option] }" }
+  end
+
+  def icon_state state
+    return '❏' if state == 'todo'
+    '✔'
   end
 end
