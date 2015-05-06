@@ -3,12 +3,7 @@
 require './config/application'
 
 def current_token
-  # TODO:
-  # Hacer un script que cree la carpeta, el archivo y ejecute el commando
-  # para que la api de github nos de un token para el usuario y guardarla
-  # en el archivo.
-  # curl "https://api.github.com/authorizations" -u lcostantini --data '{"note": "admin script"}'
-  @token ||= open(File.expand_path("~/.pato-manager/.pato_manager")).read.chomp
+  @token ||= open(File.expand_path("~/.pato-manager")).read.chomp
 end
 
 def json_response response
