@@ -46,7 +46,6 @@ command :new do |c|
     category = options.c || ask("Category: ")
     params = { task: { name: name, description: options.d, category: category } }
     response = Patodo.post "/tasks", body: params.to_json
-    binding.pry
     say "# OK" if response.code == 201
   end
 end
