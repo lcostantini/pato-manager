@@ -93,6 +93,17 @@ command :undone do |c|
   end
 end
 
+# TODO: mark a task as CANCEL
+#command :cancel do |c|
+#  c.syntax = 'cancel id'
+#  c.description = 'Mark a task as canceled.'
+#  c.action do |args|
+#    id = args.join(' ')
+#    response = Patodo.put "/tasks/#{ id }/cancel"
+#    say "# OK" if response.code == 200
+#  end
+#end
+
 command :delete do |c|
   c.syntax = 'delete id'
   c.description = 'Delete a task.'
