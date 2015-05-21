@@ -1,16 +1,21 @@
 Pato Manager
 ============
 
-Is a console application for create and keep tracking of TODOs.
+Is a console application to create and keep tracking of TODOs.
 
 ## Description
 
-Every time you need to remember something, no matter it is, you forget.
-For that you need **Pato Manager**.
+Every time you need to remember something, no matter what is it, you forget.
+To solve your problem here is... (drum sound) **Pato Manager**.
 
-When you're working in a terminal and want to save a task, you only need to run
-the appropriate command and the task is saved. You can also check if you have
-unfinished tasks.
+When you're working in a terminal and want to save something to remember,
+you only need to use the appropriate command and the todo is saved.
+Pato Manager accepts commands than let you create and operate over your TODOs list.
+For that Pato use an API called
+[small-api-in-the-world](https://github.com/lcostantini/small-api-in-the-world/blob/master/README.md),
+that can handle your request and save it in a Redis DB.
+
+You can find [examples](https://github.com/lcostantini/pato-manager#examples) bellow.
 
 ## Install
 
@@ -20,18 +25,10 @@ cd pato-manager
 bundle
 ```
 
-## Usage
-
-For run the application you need to run.
-
-```
-bin/patodo
-```
-
 ## Commands
 
-All the commands support the option -h to see the help and description
-for each.
+All the commands support the option **-h** to see the help and description
+for each one.
 
 1. new
 2. todo (is the default command)
@@ -39,32 +36,63 @@ for each.
 4. update
 5. done
 6. undone
-7. category
+~~7. cancel~~
+8. delete
+9. category
 
-## Example
+## Examples
 
-Create a new task.
+###### Create a new task.
 
 ```
-bin/patodo new 'Write Readme' task --c 'example'
+bin/patodo new 'Example task' --c 'example'
 ```
 
-this return **OK** if the task was correctly created.
+The command _new_ accept options like --d and --c.
+In this case --c add a category for the task.
+If the task was correctly created, this return **# OK**.
 
-then run...
+Then to see the task that you create run...
+
+```
+bin/patodo todo
+
+```
+
+or, easier
 
 ```
 bin/patodo
 ```
 
-returns a table with all pending tasks.
+because the default command is **todo**.
 
-| Name         | Description | Date       | State | Category |
-|:------------:|:-----------:|:----------:|:-----:|:--------:|
-| Example task |             | 2015-03-24 | todo  | example  |
+This returns a table with all pending tasks.
 
-If you try to create a new task without name and category Pato Manager
-asking for one.
+| Name         | State | Category |
+|:------------:|:-----:|:--------:|
+| Example task | todo  | example  |
+
+If you want the table show more information you can add options like
+..* --d, to show the description column
+..* --da, to show the creation date
+
+
+With the command **all**
+
+```
+bin/patodo all
+
+```
+
+You can see the table with all the tasks, not only those that
+have the todo state.
+
+###### Update a task.
+
+###### Done, Undone and Cancel a task.
+
+###### Category.
 
 ## Contributing
 
