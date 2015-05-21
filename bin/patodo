@@ -3,14 +3,16 @@
 require './config/application'
 
 def current_token
-  @token ||= open(File.expand_path("~/.pato-manager")).read.chomp
+  begin
+    @token ||= open(File.expand_path("~/.pato-manager")).read.chomp
+  rescue Exception => e
+    e.message
+  end
 end
 
 def json_response response
   JSON.parse response, symbolize_names: true
 end
-
-raise 'Error: Can\'t read the token.' unless current_token
 
 class Patodo
   include HTTParty
