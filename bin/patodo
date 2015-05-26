@@ -7,7 +7,8 @@ def current_token
   begin
     @token ||= open(File.expand_path("~/.pato-manager")).read.chomp
   rescue Exception => e
-    e.message
+    puts "\nError: the file doesn't exist."
+    puts "Try: run the script to create the file and get the token.\n\n"
   end
 end
 
