@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require './config/application'
+URL = 'https://pato-manager.herokuapp.com/'
 
 def current_token
   begin
@@ -16,7 +17,7 @@ end
 
 class Patodo
   include HTTParty
-  base_uri "#{ ENV['URL'] }"
+  base_uri URL
   headers 'Content-Type' => 'application/json'
   headers 'User-Token' => current_token
 end
