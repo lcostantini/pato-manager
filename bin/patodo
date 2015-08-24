@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'pry'
 require 'commander/import'
 require 'httparty'
 require 'json'
@@ -123,8 +122,8 @@ command :delete do |c|
   end
 end
 
+# TODO: filtrar tambien por done (--d) y undone (--t).
 command :category do |c|
-  # TODO: filtrar tambien por done (--d) y undone (--t).
   c.syntax = 'category \'string\''
   c.description = 'Find all tasks for a specific category.'
   c.action do |args|
