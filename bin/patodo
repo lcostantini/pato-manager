@@ -11,9 +11,14 @@ URL = 'https://pato-manager.herokuapp.com/'
 def current_token
   begin
     @token ||= open(File.expand_path("~/.pato-manager")).read.chomp
-  rescue Exception => e
-    puts "\nError: the file doesn't exist."
-    puts "Try: run the script to create the file and get the token.\n\n"
+  rescue Errno::ENOENT => e
+    puts <<-MESSAGE
+
+Error: the file #{ e.message.split("- ").last } doesn't exists.
+Also the file needs to contain the GitHub token.
+Try to run the script to create the file and get the token or for HELP.
+
+    MESSAGE
   end
 end
 
@@ -31,6 +36,7 @@ end
 program :name, 'Pato Manager'
 program :version, '1.0.0'
 program :description, 'A terminal application to keep tracking of your todo lists.'
+program :help, 'Author', 'Costantini Leandro <costantinileandro1@gmail.com'
 
 default_command :todo
 
