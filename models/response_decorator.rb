@@ -3,6 +3,7 @@ class ResponseDecorator
     @response = response
     @options = options
     return '# The list is empty' if response.empty?
+    return '# ' + response[:errors] if response[:errors]
     Terminal::Table.new headings: get_header, rows: get_rows
   end
 
