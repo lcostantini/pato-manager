@@ -16,7 +16,7 @@ def current_token
 
 Error: the file #{ e.message.split("- ").last } doesn't exists.
 Also the file needs to contain the GitHub token.
-Try to run the script to create the file and get the token or for HELP.
+Try to run the script to create the file and get the token or for help.
 
     MESSAGE
   end
@@ -136,5 +136,69 @@ command :category do |c|
     category = args.join(' ') || ask("Category: ")
     response = Patodo.get "/tasks/category?topic=#{ category }"
     puts ResponseDecorator.new.decorate_table json_response(response)
+  end
+end
+
+command :token do |c|
+  c.syntax = 'token \'string\''
+  c.description = <<-README
+HOW IT WORKS:
+To know the user that is using the app or create a new one,
+Pato Manager needs to know your GitHub email[*], for that,
+the script ask your GitHub username and try to create or read
+a public token .- **only gets your public profile details** -.
+
+The GitHub API ask for your password, then the script capture
+the response from the API and save in pato-manager file.
+You can see your token in $HOME/.pato-manager
+and in GitHub https://github.com/settings/tokens.
+
+[*]: Because it's easier than having to remember another login account.
+  README
+  c.action do |args|
+    username = args.first || ask('GitHub username: ')
+    response = `curl "https://api.github.com/authorizations" -u #{ username } --data '{"scopes": ["user:email"], "note": "pato-manager"}'`
+    puts
+    puts json_response(response)
+    if json_response(response)[:message]
+      puts 'You can run the \'token_help\' command to get more info.'
+    else
+      open(File.expand_path("~/.pato-manager"), 'a+') do |f|
+        f.write json_response(response)[:token]
+      end
+      puts 'Done! The token was saved.'
+    end
+  end
+end
+
+command :manually do |c|
+  c.syntax = 'manually'
+  c.description = 'This command help to create a token manually.'
+  c.action do |_|
+    puts <<-README
+MANUALLY:
+To get the token manually, run the commands at the bottom.
+In the curl command replacing the USERNAME for your GitHub username,
+then execute the second command that creates a hidden file called pato-manager.
+Finally copy the token provided by the Github API and save it in the file.
+
+curl "https://api.github.com/authorizations" -u USERNAME --data '{"scopes": ["user:email"], "note": "pato-manager"}'
+touch ~/.pato-manager
+    README
+  end
+end
+
+command :token_help do |c|
+  c.syntax = 'token_help'
+  c.description = 'This command help to solve some error messages given from the GitHub API.'
+  c.action do |_|
+    puts <<-HELP
+HELP:
+* Validation Failed: if you get this error is because you already have a token.
+You don't need to create a token, check if the file contains the token and you
+are ready to use.
+If the file doesn't contain the token or the file is missing you can delete the
+token in your GitHub settings panel and run the command 'token' or 'manually'.
+    HELP
   end
 end
