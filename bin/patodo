@@ -56,11 +56,11 @@ command :new do |c|
   c.option '--d STRING', String, 'Adds a description for a todo task.'
   c.option '--c STRING', String, 'Add a category for a todo task.'
   c.action do |args, options|
-    name = args.join(' ') || ask("Name: ")
-    category = options.c || ask("Category: ")
+    name = args.first || ask('Name: ')
+    category = options.c || ask('Category: ')
     params = { task: { name: name, description: options.d, category: category } }
     response = Patodo.post "/tasks", body: params.to_json
-    say "# OK" if response.code == 201
+    say '# SAVED' if response.code == 201
   end
 end
 
@@ -79,10 +79,10 @@ command :update do |c|
   c.option '--d STRING', String, 'Adds a new description for a task'
   c.option '--c STRING', String, 'Add a category for a todo task.'
   c.action do |args, options|
-    id = args.join(' ')
+    id = args.first || ask('ID: ')
     params = { task: { name: options.n, description: options.d, category: options.c } }
     response = Patodo.put "/tasks/#{ id }", body: params.to_json
-    say "# OK" if response.code == 200
+    say '# UPDATED' if response.code == 204
   end
 end
 
@@ -90,9 +90,9 @@ command :done do |c|
   c.syntax = 'done id'
   c.description = 'Mark a todo task as done.'
   c.action do |args|
-    id = args.join(' ')
+    id = args.first || ask('ID: ')
     response = Patodo.put "/tasks/#{ id }/done"
-    say "# OK" if response.code == 200
+    say '# MARKED AS DONE' if response.code == 204
   end
 end
 
@@ -100,9 +100,9 @@ command :undone do |c|
   c.syntax = 'undone id'
   c.description = 'Mark a task as undone.'
   c.action do |args|
-    id = args.join(' ')
+    id = args.first || ask('ID: ')
     response = Patodo.put "/tasks/#{ id }/undone"
-    say "# OK" if response.code == 200
+    say '# MARKED AS UNDONE' if response.code == 204
   end
 end
 
@@ -121,9 +121,9 @@ command :delete do |c|
   c.syntax = 'delete id'
   c.description = 'Delete a task.'
   c.action do |args|
-    id = args.join(' ')
+    id = args.first || ask('ID: ')
     response = Patodo.delete "/tasks/#{ id }"
-    say "# OK" if response.code == 200
+    say '# DELETED' if response.code == 204
   end
 end
 
@@ -132,7 +132,7 @@ command :category do |c|
   c.syntax = 'category \'string\''
   c.description = 'Find all tasks for a specific category.'
   c.action do |args|
-    category = args.join(' ') || ask("Category: ")
+    category = args.first || ask('Category: ')
     response = Patodo.get "/tasks/category?topic=#{ category }"
     puts ResponseDecorator.new.decorate_table json_response(response)
   end
