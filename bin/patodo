@@ -33,7 +33,7 @@ class Patodo
 end
 
 program :name, 'Pato Manager'
-program :version, '1.0.0'
+program :version, '0.1.0'
 program :description, 'A terminal application to keep tracking of your todo lists.'
 program :help, 'Author', 'Costantini Leandro <costantinileandro1@gmail.com'
 
