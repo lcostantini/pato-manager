@@ -1,3 +1,11 @@
+PATH
+  remote: .
+  specs:
+    patodo (1.0.0)
+      commander (~> 4.3)
+      httparty (~> 0.13)
+      terminal-table (~> 1.5)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -15,10 +23,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  commander (~> 4.3)
-  httparty (~> 0.13)
-  json (~> 1.8)
-  terminal-table (~> 1.5)
+  patodo!
 
 BUNDLED WITH
    1.10.6
