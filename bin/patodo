@@ -3,7 +3,7 @@
 require 'commander/import'
 require 'httparty'
 require 'json'
-require './lib/response_decorator'
+require_relative '../lib/response_decorator'
 
 URL = 'https://pato-manager.herokuapp.com/'
 
