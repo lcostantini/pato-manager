@@ -33,9 +33,14 @@ class Patodo
 end
 
 program :name, 'Pato Manager'
-program :version, '0.1.0'
-program :description, 'A terminal application to keep tracking of your todo lists.'
+program :version, '0.1.1'
 program :help, 'Author', 'Costantini Leandro <costantinileandro1@gmail.com'
+program :description, "A terminal application to keep tracking of your todo lists.
+
+USAGE:
+To start you need to run the command TOKEN or MANUALLY this create a token for
+your GitHub account that only gets your email to create of find an account.
+When you have your token you are ready to start using Pato."
 
 default_command :todo
 
@@ -140,21 +145,24 @@ end
 
 command :token do |c|
   c.syntax = 'token \'string\''
-  c.description = <<-README
+  c.description = 'Create a token for your GitHub account to register in Pato.'
+  c.action do |args|
+    puts <<-README
 HOW IT WORKS:
 To know the user that is using the app or create a new one,
 Pato Manager needs to know your GitHub email[*], for that,
-the script ask your GitHub username and try to create or read
-a public token .- **only gets your public profile details** -.
+the command ask your GitHub username and try to create or read
+a public token .- **only gets your email** -.
 
-The GitHub API ask for your password, then the script capture
+The GitHub API ask for your password, then the command capture
 the response from the API and save in pato-manager file.
 You can see your token in $HOME/.pato-manager
 and in GitHub https://github.com/settings/tokens.
 
 [*]: Because it's easier than having to remember another login account.
-  README
-  c.action do |args|
+
+    README
+
     username = args.first || ask('GitHub username: ')
     response = `curl "https://api.github.com/authorizations" -u #{ username } --data '{"scopes": ["user:email"], "note": "pato-manager"}'`
     puts
