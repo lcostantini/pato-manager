@@ -1,3 +1,5 @@
+[![Gem Version](https://img.shields.io/gem/v/patodo.svg?style=plastic)](https://rubygems.org/gems/patodo)
+
 Pato Manager
 ============
 
